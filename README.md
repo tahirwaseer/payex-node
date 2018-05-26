@@ -64,7 +64,7 @@ PayEx.initialize_transaction(payex_config, params)
 
 Here is what you would get in response;
 
-```
+```node
   {
     code: 'OK',// OK in case of success otherwise different
     errorCode: 'OK',// OK in case of success otherwise different
@@ -91,10 +91,10 @@ PayEx.complete_transactions(payex_config, {orderRef: res.orderRef})
 ```
 
 The response returned from `PayEx.complete_transactions` contains following information;
-```
+```node
   { 
-    code: 'OK', // 
-    errorCode: 'OK',
+    code: 'OK', // OK in case of success otherwise different
+    errorCode: 'OK', // OK in case of success otherwise different
     orderStatus: '0',// 0 for success otherwise can be 1 or 2
     orderId: 'XXX',// the orderId you sent with initialize method
     transactionStatus: 'sale', // sale/0 in case of success otherwise can be initialize/1, credit/2, authorize/3, cancel/4, failure/5, capture/6 ...
