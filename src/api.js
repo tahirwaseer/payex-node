@@ -90,7 +90,6 @@ const hash_params = (params, specs) => {
 }
 
 const parseXml = (result,actionName) => {
-  console.log(result);
   return new Promise((resolve, reject)=> {
     parseString(result, function (err, response) {
       let responseData = {};
@@ -99,7 +98,6 @@ const parseXml = (result,actionName) => {
       responseData.code = response['status'][0]['code'][0];
       responseData.errorCode = response['status'][0]['errorCode'][0]
       // Conditionaly extract data from XML based on action (Initialize8/Complete)
-      console.log(response);
       if (actionName=='Complete') {
         const orderStatus = response['orderStatus'][0];
         responseData.orderStatus = orderStatus;
