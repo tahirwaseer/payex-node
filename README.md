@@ -62,9 +62,9 @@ PayEx.initialize_transaction(payex_config, params)
 
 ```
 
-Here is what you would get in response by calling ;
+Here is what you would get in response;
 
-```json
+```
   {
     code: 'OK',// OK in case of success otherwise different
     errorCode: 'OK',// OK in case of success otherwise different
@@ -91,7 +91,7 @@ PayEx.complete_transactions(payex_config, {orderRef: res.orderRef})
 ```
 
 The response returned from `PayEx.complete_transactions` contains following information;
-```json
+```
   { 
     code: 'OK', // 
     errorCode: 'OK',
