@@ -1,6 +1,6 @@
 {
   "name": "payex-node",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "PayEx SOAP API glue for Node.js",
   "main": "index.js",
   "scripts": {

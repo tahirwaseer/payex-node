@@ -97,26 +97,29 @@ const parseXml = (result,actionName) => {
       response = response['payex'];
       responseData.code = response['status'][0]['code'][0];
       responseData.errorCode = response['status'][0]['errorCode'][0]
-      // Conditionaly extract data from XML based on action (Initialize8/Complete)
-      if (actionName=='Complete') {
-        const orderStatus = response['orderStatus'][0];
-        responseData.orderStatus = orderStatus;
-        /* Order Status can be 0 = The order is completed (a purchase has been done,
-          but check the transactionStatus to see the result). 1 = The order is processing.
-          The customer has not started the purchase. PxOrder.Complete can return 
-          orderStatus 1 for 2 weeks after PxOrder.Initialize is called. 
-          Afterwards the orderStatus will be set to 2 = No order or transaction is found.
-        */
+      // If any error occured during connection/authentication then we don't need to extract this data. Mostly it is not available in response
+      if (responseData.code == 'OK') {
+        // Conditionaly extract data from XML based on action (Initialize8/Complete)
+        if (actionName=='Complete') {
+          const orderStatus = response['orderStatus'][0];
+          responseData.orderStatus = orderStatus;
+          /* Order Status can be 0 = The order is completed (a purchase has been done,
+            but check the transactionStatus to see the result). 1 = The order is processing.
+            The customer has not started the purchase. PxOrder.Complete can return 
+            orderStatus 1 for 2 weeks after PxOrder.Initialize is called. 
+            Afterwards the orderStatus will be set to 2 = No order or transaction is found.
+          */
 
-        // If order status is not equal to 0 then no other details will be available in response.
-        // Lets just set other values to empty string otherwise
-        responseData.orderId = orderStatus > 0 ? '' : response['orderId'][0];
-        responseData.transactionStatus = orderStatus > 0 ? '' : parse_transaction_status(response['transactionStatus'][0]);
-        responseData.transactionRef = orderStatus > 0 ? '' : response['transactionRef'][0];
-        responseData.errorDetails = orderStatus > 0 ? '' : (response['errorDetails'] && response['errorDetails'][0]['transactionThirdPartyError'] ? response['errorDetails'][0]['transactionThirdPartyError'][0] : '');
-      }else{
-        responseData.orderRef = response['orderRef'][0];
-        responseData.redirectUrl = response['redirectUrl'][0];
+          // If order status is not equal to 0 then no other details will be available in response.
+          // Lets just set other values to empty string otherwise
+          responseData.orderId = orderStatus > 0 ? '' : response['orderId'][0];
+          responseData.transactionStatus = orderStatus > 0 ? '' : parse_transaction_status(response['transactionStatus'][0]);
+          responseData.transactionRef = orderStatus > 0 ? '' : response['transactionRef'][0];
+          responseData.errorDetails = orderStatus > 0 ? '' : (response['errorDetails'] && response['errorDetails'][0]['transactionThirdPartyError'] ? response['errorDetails'][0]['transactionThirdPartyError'][0] : '');
+        }else{
+          responseData.orderRef = response['orderRef'][0];
+          responseData.redirectUrl = response['redirectUrl'][0];
+        }
       }
       resolve(responseData);
     });
